@@ -1,0 +1,199 @@
+#include <iostream>
+#include <vector>
+#include <deque>
+
+using namespace std;
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(nullptr); cout.tie(nullptr);
+    int n, k;
+    cin >> n >> k;
+    vector<int> arr(n);
+    for (int i = 0; i < n; ++i) {
+        cin >> arr[i];
+    }
+    deque<int> queue;
+    for (int i = 0; i < n; ++i) {
+        if (queue.empty()) {
+            queue.push_back(arr[i]);
+        } else {
+            while (!queue.empty() && arr[i] < queue.back()) {
+                queue.pop_back();
+            }
+            queue.push_back(arr[i]);
+        }
+        if (i >= k - 1) {
+            cout << queue.front() << "\n";
+            if (arr[i - k + 1] == queue.front()) {
+                queue.pop_front();
+            }
+        }
+    }
+    return 0;
+}
+
+
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+#define int long long
+
+signed main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(nullptr);
+    int n, res = 0;
+    cin >> n;
+    vector<int> arr(n);
+    for (int i = 0; i < n; i++) {
+        cin >> arr[i];
+    }
+    sort(arr.begin(), arr.end());
+    for (int i = 0; i < n - 1; i++) {
+        for (int j = i + 1; j < n; j++) {
+            int limit = arr[i] + arr[j];
+            int k = lower_bound(arr.begin(), arr.end(), limit) - arr.begin();
+            res += k - j -  1;
+        }
+    }
+    cout << res;
+}
+
+
+n = int(input())
+dp = []
+for i in range(2 * n - 1, n - 1, -1):
+    dp.append([0] * i)
+    dp[-1][0] = 1
+for i in range(1, 2 * n - 1):
+    for j in range(len(dp)):
+        if len(dp[j]) <= i:
+            continue
+        if j == 0:
+            dp[j][i] = dp[j][i - 1] + 2 * dp[j + 1][i - 1]
+        elif j == len(dp) - 1:
+            dp[j][i] = dp[j][i - 1] + dp[j - 1][i]
+        else:
+            dp[j][i] = dp[j][i - 1] + dp[j + 1][i - 1] + dp[j - 1][i]
+print(dp[0][2 * n - 2])
+
+
+brackets = {"(": ")",
+            "[": "]",
+            "{": "}"}
+
+s = input()
+dp = []
+par = []
+for i in range(len(s)):
+    temp1 = []
+    temp2 = []
+    for j in range(len(s)):
+        temp1.append(-1)
+        temp2.append(-1)
+    dp.append(temp1)
+    par.append(temp2)
+
+
+def count(l, r):
+    if l > r:
+        return 0
+    if dp[l][r] != -1:
+        return dp[l][r]
+    if l == r:
+        dp[l][r] = 1
+        par[l][r] = -1
+        return dp[l][r]
+
+    par[l][r] = -1
+    dp[l][r] = 101
+    if s[l] in brackets and brackets[s[l]] == s[r]:
+        cost = count(l + 1, r - 1)
+        if dp[l][r] > cost:
+            dp[l][r] = cost
+
+    for i in range(l, r):
+        left = count(l, i)
+        right = count(i + 1, r)
+        if left + right < dp[l][r]:
+            dp[l][r] = left + right
+            par[l][r] = i
+    return dp[l][r]
+
+
+def ans(l, r):
+    if l >= r:
+        return
+    if par[l][r] == -1:
+        print(s[l], end="")
+        ans(l + 1, r - 1)
+        print(s[r], end="")
+    else:
+        ans(l, par[l][r])
+        ans(par[l][r] + 1, r)
+
+
+count(0, len(s) - 1)
+ans(0, len(s) - 1)
+
+
+import bisect
+
+n = int(input())
+arr = list(map(int, input().split()))
+dp = [1] * n
+res = [int(1e9)] * n
+length = 1
+for i in range(n):
+    j = bisect.bisect_left(res, arr[i])
+    res[j] = arr[i]
+    dp[i] = j + 1
+    if j + 1 > length:
+        length = j + 1
+ans = []
+prev = int(1e9)
+for i in range(n - 1, -1, -1):
+    if dp[i] == length and prev > arr[i]:
+        ans.append(arr[i])
+        length -= 1
+        prev = arr[i]
+print(len(ans))
+print(*ans[::-1])
+
+
+n, s, m = map(int, input().split())
+matrix = []
+for i in range(n):
+    temp = list(map(int, input().split()))
+    matrix.append(temp)
+
+
+def multiply(a, b):
+    new_matrix = [[0 for i in range(len(a))] for j in range(len(a))]
+    for i in range(len(a)):
+        for j in range(len(a)):
+            for k in range(len(a)):
+                new_matrix[i][j] += (a[i][k] * b[k][j]) % m
+                new_matrix[i][j] %= m
+    return new_matrix
+
+
+def pow(a, x):
+    if x == 1:
+        return matrix
+    if x % 2 == 0:
+        temp = pow(a, x // 2)
+        return multiply(temp, temp)
+    else:
+        return multiply(matrix, pow(a, x - 1))
+
+
+matrix = pow(matrix, s)
+for i in range(n):
+    for j in range(n):
+        print(matrix[i][j], end=" ")
+    print()
+
