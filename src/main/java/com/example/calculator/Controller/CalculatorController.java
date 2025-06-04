@@ -16,6 +16,11 @@ public class CalculatorController {
         this.calculatorService = calculatorService;
     }
 
+    @GetMapping(path = "/")
+    public String welcomePage() {
+        return "Добро пожаловать в калькулятор";
+    }
+
     @GetMapping(path = "/plus")
     public Integer plusCalculate(@RequestParam("num1") Integer num1, @RequestParam("num2") Integer num2) {
         return calculatorService.plusCalc(num1, num2);
