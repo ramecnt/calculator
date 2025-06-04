@@ -16,22 +16,22 @@ public class CalculatorController {
     }
 
     @GetMapping(path = "/plus")
-    public String calculatePlus(@RequestParam("num1") int num1, @RequestParam("num2") int num2) {
-        return calculatorService.CalculatorPlus(num1, num2);
+    public Integer plusCalculate(@RequestParam("num1") Integer num1, @RequestParam("num2") Integer num2) {
+        return calculatorService.plusCalc(num1, num2);
     }
 
     @GetMapping(path = "/minus")
-    public String calculateMinus(@RequestParam("num1") int num1, @RequestParam("num2") int num2) {
-        return calculatorService.CalculatorMinus(num1, num2);
+    public Integer minusCalculate(@RequestParam("num1") Integer num1, @RequestParam("num2") Integer num2) {
+        return calculatorService.minusCalc(num1, num2);
     }
 
-    @GetMapping(path = "/multiple")
-    public String calculateMultiple(@RequestParam("num1") int num1, @RequestParam("num2") int num2) {
-        return calculatorService.CalculatorMultiple(num1, num2);
+    @GetMapping(path = "/multiply")
+    public Integer multipleCalculate(@RequestParam("num1") Integer num1, @RequestParam("num2") Integer num2) {
+        return calculatorService.multipleCalc(num1, num2);
     }
 
     @GetMapping(path = "/divide")
-    public String calculateDivide(@RequestParam("num1") int num1, @RequestParam("num2") int num2) {
-        return calculatorService.CalculatorDivide(num1, num2);
+    public Float divideCalculate(@RequestParam("num1") Integer num1, @RequestParam("num2") Integer num2) {
+        return calculatorService.divideCalc(num1, num2);
     }
 }

@@ -1,11 +1,11 @@
 package com.example.calculator;
 
 public interface CalculatorService {
-    String CalculatorPlus(int num1, int num2);
+    Integer plusCalc(Integer num1, Integer num2);
 
-    String CalculatorMinus(int num1, int num2);
+    Integer minusCalc(Integer num1, Integer num2);
 
-    String CalculatorMultiple(int num1, int num2);
+    Integer multipleCalc(Integer num1, Integer num2);
 
-    String CalculatorDivide(int num1, int num2);
+    Float divideCalc(Integer num1, Integer num2);
 }
